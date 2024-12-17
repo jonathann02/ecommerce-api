@@ -10,6 +10,17 @@ router.get('/', async (req, res) => {
         res.json({message: error});
     }
 });
+        // Fetch top 3 best-selling products from the database
+        router.get('/best-sellers', async (req, res) => {
+            try {
+                const bestSellingProducts = await Product.find()
+                    .sort({ sales: -1 }) // Sort by sales in descending order
+                    .limit(6); // Limit to top 6
+                res.json(bestSellingProducts);
+            } catch (error) {
+                res.status(500).json({ message: 'Error fetching best-selling products', error: error.message });
+            }
+        });
 
 // GET a specific product by ID
 router.get('/:id', async (req, res) => {
